@@ -1,0 +1,27 @@
+{
+    "name": "rubedo-local-storage",
+    "version": "0.0.0",
+    "description": "Easy persitent client side state",
+    "main": "index.js",
+    "types": "index.d.ts",
+    "files": [
+        "index.js",
+        "index.d.ts"
+    ],
+    "scripts": {},
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kernel32dev/rubedo-local-storage.git"
+    },
+    "bugs": "https://github.com/kernel32dev/rubedo-local-storage/issues",
+    "homepage": "https://github.com/kernel32dev/rubedo-local-storage",
+    "keywords": [
+        "local-storage",
+        "state"
+    ],
+    "author": "kernel32dev",
+    "license": "MIT",
+    "dependencies": {
+        "rubedo": "file:../rubedo"
+    }
+}
