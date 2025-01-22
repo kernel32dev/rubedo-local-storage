@@ -25,6 +25,6 @@ export const LocalState: {
 
 /** creates a state persisted in localStorage, without any serialization */
 export const LocalStringState: {
-    new(key: string, initialValue: string | null): State<string | null>;
     new(key: string, initialValue: string): State<string>;
+    new(key: string, initialValue: string | null): State<string | null>;
 }

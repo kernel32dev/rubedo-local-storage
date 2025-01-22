@@ -1,19 +1,22 @@
 import { Effect, State } from "rubedo";
 
-/** @type {WeakMap<string, State<any>>} */
-const localStateCache = new WeakMap();
+// TODO! fix desync between localStateCache localStringStateCache trackCache on the same key
 
-/** @type {WeakMap<string, State<string | null>>} */
-const localStringStateCache = new WeakMap();
+/** @type {Map<string, WeakRef<State<any>>>} */
+const localStateCache = new Map();
 
-/** @type {WeakMap<string, object>} */
-const trackCache = new WeakMap();
+/** @type {Map<string, WeakRef<State<string | null>>>} */
+const localStringStateCache = new Map();
+
+/** @type {Map<string, WeakRef<object>>} */
+const trackCache = new Map();
 
 export function LocalState(key, initialValue) {
     if (!new.target) throw new TypeError("Constructor LocalState requires 'new'");
     if (new.target != LocalState) throw new TypeError("Cannot extend LocalState");
     if (typeof key != "string") throw new TypeError("key must be a string");
     let state = localStateCache.get(key);
+    if (state) state = state.deref();
     if (!state) {
         const storedJSON = localStorage.getItem(key);
         try {
@@ -41,6 +44,7 @@ export function LocalStringState(key, initialValue) {
     if (typeof key != "string") throw new TypeError("key must be a string");
     if (typeof initialValue != "string" && initialValue != null) throw new TypeError("initialValue must be a string or null");
     let state = localStringStateCache.get(key);
+    if (state) state = state.deref();
     if (state) return state;
     const storedValue = localStorage.getItem(key);
     state = new State(storedValue == null ? initialValue : storedValue);
@@ -64,6 +68,7 @@ function track(key, initialValue) {
     if (typeof key != "string") throw new TypeError("key must be a string");
     if (typeof initialValue != "object") throw new TypeError("initialValue must be an object or an array");
     let tracked = trackCache.get(key);
+    if (tracked) tracked = tracked.deref();
     if (tracked) return tracked;
     const storedJSON = localStorage.getItem(key);
     try {
